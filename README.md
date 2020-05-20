@@ -1,6 +1,4 @@
-# go-util
+# goutil
 go utils 
 
-
-package util
 
