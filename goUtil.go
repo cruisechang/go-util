@@ -1,4 +1,4 @@
-package util
+package goutil
 
 const (
 	ZeroInt     = 0

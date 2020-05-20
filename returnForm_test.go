@@ -1,24 +1,22 @@
-package util
+package goutil
 
 import (
 	"bytes"
 	"encoding/json"
 	"errors"
 	"testing"
-
-	kumayutil "wangzugames.com/kumay/util"
 )
 
 func TestReturnSuccess(t *testing.T) {
-	actual, err := kumayutil.NewReturn(
-		kumayutil.NewErr(kumayutil.ExternalOK, nil),
+	actual, err := NewReturn(
+		NewErr(ExternalOK, nil),
 		"success!",
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-	expect, err := json.Marshal(kumayutil.ReturnForm{
-		Code: kumayutil.ReturnSuccess,
+	expect, err := json.Marshal(ReturnForm{
+		Code: ReturnSuccess,
 		Msg:  "",
 		Data: "success!",
 	})
@@ -31,15 +29,15 @@ func TestReturnSuccess(t *testing.T) {
 }
 
 func TestKumayCode(t *testing.T) {
-	actual, err := kumayutil.NewReturn(
-		kumayutil.NewErr(kumayutil.ReturnServerError, errors.New("testing code 9")),
+	actual, err := NewReturn(
+		NewErr(ReturnServerError, errors.New("testing code 9")),
 		"",
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-	expect, err := json.Marshal(kumayutil.ReturnForm{
-		Code: kumayutil.ReturnServerError,
+	expect, err := json.Marshal(ReturnForm{
+		Code: ReturnServerError,
 		Msg:  "testing code 9",
 	})
 	if err != nil {
@@ -51,15 +49,15 @@ func TestKumayCode(t *testing.T) {
 }
 
 func TestCodeSubOne(t *testing.T) {
-	actual, err := kumayutil.NewReturn(
-		kumayutil.NewErr(-1, errors.New("testing code -1")),
+	actual, err := NewReturn(
+		NewErr(-1, errors.New("testing code -1")),
 		"",
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-	expect, err := json.Marshal(kumayutil.ReturnForm{
-		Code: kumayutil.ReturnExternalServerError,
+	expect, err := json.Marshal(ReturnForm{
+		Code: ReturnExternalServerError,
 		Msg:  "testing code -1",
 	})
 	if err != nil {
@@ -71,15 +69,15 @@ func TestCodeSubOne(t *testing.T) {
 }
 
 func TestCodeSmallThanZero(t *testing.T) {
-	actual, err := kumayutil.NewReturn(
-		kumayutil.NewErr(-2, errors.New("testing code -2")),
+	actual, err := NewReturn(
+		NewErr(-2, errors.New("testing code -2")),
 		"",
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-	expect, err := json.Marshal(kumayutil.ReturnForm{
-		Code: kumayutil.ReturnParamsError,
+	expect, err := json.Marshal(ReturnForm{
+		Code: ReturnParamsError,
 		Msg:  "testing code -2",
 	})
 	if err != nil {

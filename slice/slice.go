@@ -2,7 +2,7 @@ package slice
 
 import (
 	"errors"
-	"github.com/cruisechang/util/math"
+	"github.com/cruisechang/goutil/math"
 	"reflect"
 )
 
