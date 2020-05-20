@@ -77,7 +77,7 @@ func AESCbcPkcs7PaddingEncrypt(origData, key []byte) ([]byte, error) {
 	}
 	iv := []byte("0000000000000000")
 	blockSize := block.BlockSize()
-	origData, _ = AESPKCS7Padding(origData, blockSize)
+	origData, _ = PKCS7Padding(origData, blockSize)
 	blockMode := cipher.NewCBCEncrypter(block, iv)
 	crypted := make([]byte, len(origData))
 	blockMode.CryptBlocks(crypted, origData)
@@ -92,10 +92,11 @@ func AESCbcPkcs7PaddingDecrypt(crypted, key []byte) ([]byte, error) {
 		return nil, err
 	}
 	iv := []byte("0000000000000000")
-	blockSize := block.BlockSize()
+	//blockSize := block.BlockSize()
 	blockMode := cipher.NewCBCDecrypter(block, iv)
 	origData := make([]byte, len(crypted))
 	// origData := crypted
 	blockMode.CryptBlocks(origData, crypted)
-	return AESPKCS7UnPadding(origData, blockSize)
+	return PKCS7UnPadding(origData)
 }
+

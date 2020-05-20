@@ -1,31 +1,54 @@
 package uuid
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestGetV4(t *testing.T) {
 
-	u,err:=GetV4()
+	u, err := GetV4()
 
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 
-	} else {
-		fmt.Printf("%s", u)
 	}
+	fmt.Printf("%s", u)
+
 }
 
+func TestGetV4Trim(t *testing.T) {
+
+	u, err := GetV4Trim()
+
+	if err != nil {
+		t.Fatal(err)
+
+	}
+	fmt.Printf("%s", u)
+
+}
 
 func TestGetV1(t *testing.T) {
 
-	u,err:=GetV1()
+	u, err := GetV1()
 
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 
-	} else {
-		fmt.Printf("%s", u)
 	}
+	fmt.Printf("%s", u)
+
+}
+
+func TestGetV1Trim(t *testing.T) {
+
+	u, err := GetV1Trim()
+
+	if err != nil {
+		t.Fatal(err)
+
+	}
+	fmt.Printf("%s", u)
+
 }

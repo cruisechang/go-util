@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/hex"
+	"encoding/json"
 	"testing"
 )
 
@@ -21,6 +22,60 @@ func TestAESCfb(t *testing.T) {
 		t.Errorf("TestAESCfb: expect->%q, actual->%q", expect, actual)
 	}
 }
+
+func TestAESCBC(t *testing.T) {
+
+
+	tt := struct {
+		Account  string `json:"account"`
+		Password string `json:"password"`
+	}{
+		"123", "123",}
+
+	expect, _ := json.Marshal(tt)
+
+	t.Log(string(expect))
+
+	key := []byte("0123456789abcdef")
+	actual, _ := AESCbcPkcs7PaddingEncrypt(expect, key)
+
+	b:=base64.StdEncoding.EncodeToString(actual)
+	t.Log(b)
+
+	actual,_=AESCbcPkcs7PaddingDecrypt(actual, key)
+	if !bytes.Equal(actual, expect) {
+		t.Errorf("TestAECBC: expect->%q, actual->%q", expect, actual)
+	}
+
+}
+
+
+func TestAESECB(t *testing.T) {
+
+
+	tt := struct {
+		Account  string `json:"account"`
+		Password string `json:"password"`
+	}{
+		"123", "123",}
+
+	expect, _ := json.Marshal(tt)
+
+	t.Log(string(expect))
+
+	key := []byte("0123456789abcdef") //16 bytes
+	actual, _ := AESEcbPkcs7PaddingEncrypt(expect, key)
+
+	//b:=base64.StdEncoding.EncodeToString(actual)
+	//t.Log(b)
+
+	actual,_=AESEcbPkcs7PaddingDecrypt(actual, key)
+	if !bytes.Equal(actual, expect) {
+		t.Errorf("TestAESECB: expect->%q, actual->%q", expect, actual)
+	}
+
+}
+
 
 /*
 func TestGenerateAES256(t *testing.T) {

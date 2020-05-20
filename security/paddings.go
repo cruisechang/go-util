@@ -41,8 +41,12 @@ func KeyTo24Padding(key []byte) ([]byte, error) {
 	return padKey, nil
 }
 
-// PKCS5Padding stands for PKCS #5 Password-Based Cryptography Specification,
-// https://tools.ietf.org/html/rfc5246#section-6.2.3.2
+//填充主要有三种模式：
+//ZeroPadding，数据长度不对齐时使用 0 填充，否则不填充。
+//PKCS7Padding，假设数据长度需要填充 n(n>0) 个字节才对齐，那么填充n个字节，每个字节都是 n ;如果数据本身就已经对齐了，则填充一块长度为块大小的数据，每个字节都是块大小。
+//PKCS5Padding，PKCS7Padding 的子集，block size大小固定为8字节。
+
+
 func PKCS5Padding(data []byte, blockSize int) ([]byte, error) {
 	if blockSize == 0 {
 		return nil, ErrDivisionByZero
@@ -87,7 +91,7 @@ func AESPKCS5UnPadding(origData []byte) []byte {
 // AESPKCS7Padding right-pads the given byte slice with 1 to n bytes, where
 // n is the block size. The size of the result is x times n, where x
 // is at least 1.
-func AESPKCS7Padding(b []byte, blocksize int) ([]byte, error) {
+func PKCS7Padding(b []byte, blocksize int) ([]byte, error) {
 	if blocksize <= 0 {
 		return nil, errors.New("invalid blocksize")
 	}
@@ -104,16 +108,16 @@ func AESPKCS7Padding(b []byte, blocksize int) ([]byte, error) {
 // AESPKCS7UnPadding validates and unpads data from the given bytes slice.
 // The returned value will be 1 to n bytes smaller depending on the
 // amount of padding, where n is the block size.
-func AESPKCS7UnPadding(b []byte, blocksize int) ([]byte, error) {
-	if blocksize <= 0 {
-		return nil, errors.New("invalid blocksize")
-	}
-	if b == nil || len(b) == 0 {
-		return nil, errors.New("invalid PKCS7 data (empty or not padded)")
-	}
-	if len(b)%blocksize != 0 {
-		return nil, errors.New("invalid padding on input")
-	}
+func PKCS7UnPadding(b []byte) ([]byte, error) {
+	//if blocksize <= 0 {
+	//	return nil, errors.New("invalid blocksize")
+	//}
+	//if b == nil || len(b) == 0 {
+	//	return nil, errors.New("invalid PKCS7 data (empty or not padded)")
+	//}
+	//if len(b)%blocksize != 0 {
+	//	return nil, errors.New("invalid padding on input")
+	//}
 	c := b[len(b)-1]
 	n := int(c)
 	if n == 0 || n > len(b) {
@@ -125,4 +129,24 @@ func AESPKCS7UnPadding(b []byte, blocksize int) ([]byte, error) {
 		}
 	}
 	return b[:len(b)-n], nil
+}
+
+
+//zeroPadding
+func ZerosPadding(src []byte, blockSize int) []byte {
+	paddingCount := blockSize - len(src)%blockSize
+	if paddingCount == 0 {
+		return src
+	} else {
+		return append(src, bytes.Repeat([]byte{byte(0)}, paddingCount)...)
+	}
+}
+
+func ZerosUnPadding(src []byte) []byte {
+	for i := len(src) - 1; ; i-- {
+		if src[i] != 0 {
+			return src[:i+1]
+		}
+	}
+	return nil
 }
