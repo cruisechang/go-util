@@ -35,8 +35,7 @@ func GetV1Trim() (string, error) {
 		return "", err
 	}
 
-
-	return strings.ReplaceAll(u.String(),"-",""),nil
+	return strings.ReplaceAll(u.String(), "-", ""), nil
 }
 
 //GetV4 去掉 "-"
@@ -47,6 +46,5 @@ func GetV4Trim() (string, error) {
 		return "", err
 	}
 
-
-	return strings.ReplaceAll(u.String(),"-",""),nil
+	return strings.ReplaceAll(u.String(), "-", ""), nil
 }

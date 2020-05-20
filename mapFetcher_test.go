@@ -3,12 +3,10 @@ package util
 import (
 	"testing"
 	"time"
-
-	"wangzugames.com/kumay/util"
 )
 
 func TestMapFetcherRemove(t *testing.T) {
-	data := util.NewMapfetcher(map[string]interface{}{
+	data := NewMapfetcher(map[string]interface{}{
 		"testString": "testing",
 		"testInt":    3345678,
 		"testBool":   true,
@@ -73,7 +71,7 @@ func TestMapFetcherFetchs(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	mf := util.NewMapfetcher(map[string]interface{}{
+	mf := NewMapfetcher(map[string]interface{}{
 		stringKey:     expectString,
 		intKey:        expectInt,
 		boolKey:       expectBool,
@@ -118,7 +116,7 @@ func TestMapFetcherFetchAfterError(t *testing.T) {
 	timeKey := "testTime"
 	wrongStringKey := "wrongStringKey"
 
-	mf := util.NewMapfetcher(map[string]interface{}{
+	mf := NewMapfetcher(map[string]interface{}{
 		stringKey: "testing",
 		intKey:    3345678,
 		boolKey:   true,
@@ -155,7 +153,7 @@ func TestMapFetcherFetchAfterError(t *testing.T) {
 func TestMapFetcherFetchTimeFromStringError(t *testing.T) {
 	stringTimeKey := "testStringTime"
 
-	mf := util.NewMapfetcher(map[string]interface{}{
+	mf := NewMapfetcher(map[string]interface{}{
 		stringTimeKey: "2009u-10o-102 00:002:00",
 	})
 
@@ -189,7 +187,7 @@ func TestMapFetcherKeyNotExist(t *testing.T) {
 	wrongTimeKey := "wrongTimeKey"
 	wrongStringTimeKey := "wrongStringTimeKey"
 
-	mf := util.NewMapfetcher(map[string]interface{}{
+	mf := NewMapfetcher(map[string]interface{}{
 		correctStringKey:     "testing",
 		correctIntKey:        3345678,
 		correctBoolKey:       true,
@@ -198,7 +196,7 @@ func TestMapFetcherKeyNotExist(t *testing.T) {
 		correctStringTimeKey: "2019-11-11 00:00:00",
 	})
 	mf.FetchString(wrongStringKey)
-	expect := util.ErrMapFetcherKeyNotExist
+	expect := ErrMapFetcherKeyNotExist
 	actual := mf.Err()
 	if expect != actual {
 		t.Errorf("%v expect:%v, actual:%v", wrongStringKey, expect, actual)
@@ -249,7 +247,7 @@ func TestMapFetcherAssertionFaild(t *testing.T) {
 	timeKey := "testTime"
 	stringTimeKey := "testStringTime"
 
-	mf := util.NewMapfetcher(map[string]interface{}{
+	mf := NewMapfetcher(map[string]interface{}{
 		stringKey:     struct{}{},
 		intKey:        struct{}{},
 		boolKey:       struct{}{},
@@ -258,7 +256,7 @@ func TestMapFetcherAssertionFaild(t *testing.T) {
 		stringTimeKey: struct{}{},
 	})
 	mf.FetchString(stringKey)
-	expect := util.ErrMapFetcherFaildAssertionStringType
+	expect := ErrMapFetcherFaildAssertionStringType
 	actual := mf.Err()
 	if expect != actual {
 		t.Errorf("expect:%v, actual:%v", expect, actual)
@@ -266,7 +264,7 @@ func TestMapFetcherAssertionFaild(t *testing.T) {
 	mf.ClearErr()
 
 	mf.FetchBool(boolKey)
-	expect = util.ErrMapFetcherFaildAssertionBoolType
+	expect = ErrMapFetcherFaildAssertionBoolType
 	actual = mf.Err()
 	if expect != actual {
 		t.Errorf("expect:%v, actual:%v", expect, actual)
@@ -274,7 +272,7 @@ func TestMapFetcherAssertionFaild(t *testing.T) {
 	mf.ClearErr()
 
 	mf.FetchInt(intKey)
-	expect = util.ErrMapFetcherFaildAssertionIntType
+	expect = ErrMapFetcherFaildAssertionIntType
 	actual = mf.Err()
 	if expect != actual {
 		t.Errorf("expect:%v, actual:%v", expect, actual)
@@ -290,7 +288,7 @@ func TestMapFetcherAssertionFaild(t *testing.T) {
 	mf.ClearErr()
 
 	mf.FetchTime(timeKey)
-	expect = util.ErrMapFetcherFaildAssertionTimeType
+	expect = ErrMapFetcherFaildAssertionTimeType
 	actual = mf.Err()
 	if expect != actual {
 		t.Errorf("expect:%v, actual:%v", expect, actual)
@@ -298,7 +296,7 @@ func TestMapFetcherAssertionFaild(t *testing.T) {
 	mf.ClearErr()
 
 	mf.FetchTimeFromString(stringTimeKey, "UTC")
-	expect = util.ErrMapFetcherFaildAssertionStringType
+	expect = ErrMapFetcherFaildAssertionStringType
 	actual = mf.Err()
 	if expect != actual {
 		t.Errorf("expect:%v, actual:%v", expect, actual)
@@ -314,8 +312,8 @@ func TestMapFetherActions(t *testing.T) {
 		"testFloat":  300.1,
 	}
 	actualData := map[string]interface{}{}
-	expect := util.NewMapfetcher(expectData)
-	actual := util.NewMapfetcher(actualData)
+	expect := NewMapfetcher(expectData)
+	actual := NewMapfetcher(actualData)
 	actual.CopyMap(expect)
 	if actual.Len() != expect.Len() {
 		t.Errorf("CopyMap length expect:%v, actual:%v", expect.Len(), actual.Len())

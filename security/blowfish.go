@@ -2,7 +2,6 @@ package security
 
 import (
 	"crypto/cipher"
-
 	"golang.org/x/crypto/blowfish"
 )
 

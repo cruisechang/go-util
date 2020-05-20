@@ -11,7 +11,7 @@ func TestCreateDir(t *testing.T) {
 
 	name := "logs"
 
-	err := CreateDir(name, os.ModePerm)
+	err := CreateDirectory(name, os.ModePerm)
 
 	if err != nil {
 		fmt.Printf("Create dir error: %v \n", err)

@@ -2,8 +2,8 @@ package slice
 
 import (
 	"errors"
-
-	"wangzugames.com/kumay/gameServer2/util/mathUtil"
+	"github.com/cruisechang/util/math"
+	"reflect"
 )
 
 //IsSliceEqual check if 2 slices are equal
@@ -49,7 +49,7 @@ func RandomIntSlice(src []int) ([]int, error) {
 	}
 
 	for i := 0; i < slen; i++ {
-		pos := mathUtil.RandomInt(0, len(src)-1)
+		pos := math.RandomInt(0, len(src)-1)
 		dst[i] = src[pos]
 		src = append(src[:pos], src[pos+1:]...)
 	}
@@ -58,7 +58,7 @@ func RandomIntSlice(src []int) ([]int, error) {
 
 func Contain(obj interface{}, target interface{}) (bool, error) {
 	targetValue := reflect.ValueOf(target)
-	
+
 	switch reflect.TypeOf(target).Kind() {
 	case reflect.Slice, reflect.Array:
 		for i := 0; i < targetValue.Len(); i++ {

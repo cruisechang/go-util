@@ -1,10 +1,10 @@
 package math
 
 import (
+	cryRand "crypto/rand"
 	"math"
 	"math/rand"
 	"time"
-	cryRand "crypto/rand"
 
 	"encoding/binary"
 	"log"
@@ -12,14 +12,14 @@ import (
 )
 
 func RandomString(length int) string {
-    bytes := make([]byte, length)
-    for i := 0; i < length; i++ {
-        bytes[i] = byte(RandomInt(65, 90))
-    }
-    return string(bytes)
+	bytes := make([]byte, length)
+	for i := 0; i < length; i++ {
+		bytes[i] = byte(RandomInt(65, 90))
+	}
+	return string(bytes)
 }
 
-func RandomSeed(){
+func RandomSeed() {
 	rand.Seed(time.Now().UTC().UnixNano())
 }
 
@@ -33,8 +33,7 @@ func RandomInt(min, max int) int {
 	//return min + r.Intn(max-min+1)
 
 	rand.Seed(time.Now().UTC().UnixNano())
-	return  min+rand.Intn(max-min+1)
-
+	return min + rand.Intn(max-min+1)
 
 	// return `0 <= n < 100`  not include 100
 	//fmt.Print(rand.Intn(100), ",")
@@ -60,12 +59,11 @@ func Round(val float64, roundOn float64, places int) (newVal float64) {
 	return
 }
 
-
 //CryptoRand using crypt/rand package to rand
 //return [min,max) , max number is not included
 //It panics if min<0,max <=0.
-func CryptoRandomInt(min,max int)int{
-	if min<0 || max <=0{
+func CryptoRandomInt(min, max int) int {
+	if min < 0 || max <= 0 {
 		return 0
 	}
 	nBig, err := cryRand.Int(cryRand.Reader, big.NewInt(int64(max)))
@@ -73,22 +71,23 @@ func CryptoRandomInt(min,max int)int{
 		panic(err)
 		return 0
 	}
-	return min+int(nBig.Int64())
+	return min + int(nBig.Int64())
 }
 
 //CryptoSourceRand using source to generate a crypt rand
 //returns [0,max) max is not included
-func CryptoSourceRanddomInd(max int)int{
+func CryptoSourceRanddomInd(max int) int {
 	var src cryptoSource
 	rnd := rand.New(src)
 	return rnd.Intn(max)
 }
+
 type cryptoSource struct{}
 
 func (s cryptoSource) Seed(seed int64) {}
 
 func (s cryptoSource) Int63() int64 {
-	return int64(s.Uint64() & ^uint64(1<<63))
+	return int64(s.Uint64() & ^uint64(1 << 63))
 }
 
 func (s cryptoSource) Uint64() (v uint64) {

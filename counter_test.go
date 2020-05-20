@@ -3,18 +3,16 @@ package util
 import (
 	"sync"
 	"testing"
-
-	"wangzugames.com/kumay/util"
 )
 
 func TestCounter(t *testing.T) {
 	var wg sync.WaitGroup
 
-	counter := util.NewCounter(0)
+	counter := NewCounter(0)
 
 	for i := 0; i < 100; i++ {
 		wg.Add(1)
-		go func(wg *sync.WaitGroup, c *util.Counter) {
+		go func(wg *sync.WaitGroup, c *Counter) {
 			defer wg.Done()
 			c.PlusPlus()
 		}(&wg, counter)
@@ -26,7 +24,7 @@ func TestCounter(t *testing.T) {
 
 	for i := 0; i < 100; i++ {
 		wg.Add(1)
-		go func(wg *sync.WaitGroup, c *util.Counter) {
+		go func(wg *sync.WaitGroup, c *Counter) {
 			defer wg.Done()
 			c.SubSub()
 		}(&wg, counter)

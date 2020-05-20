@@ -1,6 +1,8 @@
-
-
 /*
+package reflect
+
+import "reflect"
+
 func (u *User) GetFieldInt(fieldName string) (resValue int, resErr error) {
 	defer func() {
 		u.mutex.Unlock()
@@ -91,4 +93,5 @@ func (u *User) SetField(fieldName string, value interface{}) (resErr error) {
 
 	return nil
 }
+
 */
